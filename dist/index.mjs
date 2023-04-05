@@ -62,7 +62,9 @@ function useSizes(step, scrollOptions = {
   const [refresher, setRefresher] = useState(null);
   const [dimensions, setDimensions] = useState(initialState);
   const target = (step == null ? void 0 : step.selector) instanceof Element ? step == null ? void 0 : step.selector : document.querySelector(step == null ? void 0 : step.selector);
+  console.log("useSizes", JSON.stringify({ transition, observing, isHighlightingObserved, refresher, dimensions }));
   const handleResize = useCallback(() => {
+    console.log("useSize handleResize");
     const _a = getHighlightedRect(
       target,
       step == null ? void 0 : step.highlightedSelectors,
@@ -75,17 +77,21 @@ function useSizes(step, scrollOptions = {
     }
   }, [target, step == null ? void 0 : step.highlightedSelectors, dimensions]);
   useEffect(() => {
+    console.log("useSizes useEffect 1");
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [target, step == null ? void 0 : step.highlightedSelectors, refresher]);
   useEffect(() => {
+    console.log("useSizes useEffect 2");
     const isInView = inView(__spreadProps(__spreadValues({}, dimensions), {
       threshold: scrollOptions.inViewThreshold
     }));
     if (!isInView && target) {
       setTransition(true);
+      console.log("useSizes smoothScroll");
       smoothScroll(target, scrollOptions).then(() => {
+        console.log("setRefresher.then");
         setRefresher(Date.now());
       }).finally(() => {
         setTransition(false);
@@ -93,6 +99,7 @@ function useSizes(step, scrollOptions = {
     }
   }, [dimensions]);
   const observableRefresher = useCallback(() => {
+    console.log("useSizes observableRefresher");
     setObserving(true);
     const _a = getHighlightedRect(
       target,
@@ -736,6 +743,7 @@ var Tour = (_a) => {
     behavior: scrollSmooth ? "smooth" : "auto",
     inViewThreshold
   });
+  console.log("Tour", sizes);
   useEffect3(() => {
     if (afterOpen && typeof afterOpen === "function") {
       afterOpen(target);
@@ -940,6 +948,7 @@ var TourProvider = (_a) => {
     meta,
     setMeta
   }, props);
+  console.log("TourProvider");
   return /* @__PURE__ */ React7.createElement(TourContext.Provider, { value }, children, isOpen ? /* @__PURE__ */ React7.createElement(Tour_default, __spreadValues({}, value)) : null);
 };
 var Context_default = TourContext;
