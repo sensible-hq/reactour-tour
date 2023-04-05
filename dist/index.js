@@ -125,8 +125,7 @@ function useSizes(step, scrollOptions = {
     if (!isInView && target) {
       setTransition(true);
       (0, import_utils.smoothScroll)(target, scrollOptions).then(() => {
-        if (!observing)
-          setRefresher(Date.now());
+        setRefresher(Date.now());
       }).finally(() => {
         setTransition(false);
       });
@@ -861,7 +860,7 @@ var Tour = (_a) => {
       clipId,
       maskId
     }
-  ), target && /* @__PURE__ */ import_react7.default.createElement(
+  ), /* @__PURE__ */ import_react7.default.createElement(
     import_popover.Popover,
     {
       sizes,
